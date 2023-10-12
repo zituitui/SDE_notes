@@ -1,0 +1,50 @@
+\subsection{Approximating SGD}
+First, we look at the SGD process:
+\begin{equation}
+    x^{n+1} = x^{n} - \eta_{k} \nabla \mathcal{L} (x^n; \xi^n),\tag{ SGD}
+    \label{SGD}
+\end{equation}
+where the white noise $\xi^n$ characterize the randomness of the surrogate gradient in SGD method. Denote $\Sigma (x):=\mathbb{E}_{\xi}\left[\left( \nabla\mathcal{L}(x;\xi)- \nabla\mathcal{L}(x)\right)\left(\nabla\mathcal{L}(x;\xi)- \nabla\mathcal{L}(x)\right)^T  \right]   $ and \ref{SGD} writes:
+$$
+    x^{n+1} = x^{n} - \eta_{k} \nabla \mathcal{L} (x^n) + \sqrt{\eta \Sigma}  \sqrt{\eta} \mathcal{Z}^n, \mathcal{Z}^n\sim N(0,I_d).
+$$
+If we take the limit $\eta\rightarrow 0$ and regard $\sqrt{\eta} \mathcal{Z} ^n = \mathrm{d} W_t$, the SDE form of SGD is:
+\begin{equation}
+    \mathrm{d}X(t) = -\nabla\mathcal{L}(X(t))\mathrm{d}t+\sqrt{\eta \Sigma}\mathrm{d} W_t.\tag{ SDE-1}
+    \label{SDE-1}
+\end{equation}
+Q: 
+\begin{itemize}
+    \item Is \ref{SDE-1} a good approximation of \ref{SGD}? 
+    \item Good in what sense? 
+    \item Is there a better one?
+\end{itemize}
+A: 
+\begin{itemize}
+    \item \ref{SDE-1} is a first-order weak approximation of \ref{SGD}. 
+    \item Good in sense of testing: $\forall \left\lvert g(x)\right\rvert < K(1+\left\lvert x\right\rvert )^K , \left\lvert \mathbb{E} g(X(n\eta))-g(X^n)\right\rvert<C\eta^\alpha $
+    \item There are higher order approximations!
+\end{itemize}
+For example, the second-order approximation of \ref{SGD} writes:
+\begin{equation}
+    \mathrm{d}X(t) = -\nabla \left(\mathcal{L}(X(t)) +\frac{\eta}{4}\left\lVert\nabla\mathcal{L}(X(t)) \right\rVert^2  \right)  \mathrm{d}t+\sqrt{\eta \Sigma}\mathrm{d} W_t.\tag{ SDE-2}
+    \label{SDE-2}
+\end{equation}
+And another formulation (1-d Xiang) writes:
+\begin{equation}
+    \mathrm{d}X(t) = \frac{\log(1-\eta\mathcal{L}''(x))}{\eta\mathcal{L}''(x)}\mathcal{L}'(x) \mathrm{d}t + \sqrt{\frac{2\Sigma \cdot\log(1-\mathcal{L}''(x)\eta)}{\mathcal{L}''(x)(\mathcal{L}''(x)\eta-2)}}\mathrm{d}W_t.\tag{ SDE-Xiang-1-dim}
+    \label{SDE-Xiang}
+\end{equation}
+The d-dimensional Xiang-Formulation is still under developing.
+Another class of questions is follows:
+
+Q: 
+\begin{itemize}
+    \item How are these more advanced flows derived?
+    \item Why would the SDE approximation be useful?
+\end{itemize}
+, which will be answered in the following.
+
+
+
+

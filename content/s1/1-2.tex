@@ -1,0 +1,18 @@
+\subsection{Langevin Dynamics}
+Our goal of Langevin Dynamics is sampling from a Gibbs measure $\frac{e^{-\frac{\mathcal{L}(x)}{\sigma}}}{\mathcal{Z}_{\mathcal{L},\sigma}}$, where $\mathcal{Z}_{\mathcal{L},\sigma}$ is the normalizing constant.
+The Langevin dynamics writes:
+\begin{equation}
+    \mathrm{d}X(t) = -\nabla\mathcal{L}(X(t))\mathrm{d}t+\sqrt{2\sigma}\mathrm{d} W_t.\tag{LD}
+    \label{LD}
+\end{equation}
+Q: 
+\begin{itemize}
+    \item Why is this approach correct? I.e. why does LD have the correct equilibrium?
+    \item How fast is the convergence?
+\end{itemize}
+
+The discrete-time version of \ref{LD} writes:
+\begin{equation}
+    X^{k+1} = X^k - \eta \nabla \mathcal{L}(X^k) + \sqrt{2\sigma}\sqrt{\eta}\mathcal{Z} ^k,\mathcal{Z}^n\sim N(0,I_d)
+\end{equation}
+

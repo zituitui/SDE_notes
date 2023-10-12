@@ -1,0 +1,80 @@
+
+
+\section{在欧几里得空间上的梯度流}
+为了引出概率空间上的梯度流，本节首先从梯度下降视角引出欧几里得空间上的梯度流。
+随后将欧几里得空间上的思路推广至概率空间。
+考察一个经典的优化问题：
+$$ \underset{x \in \mathbb{R}^{n}}{min} f(x) ,f:\mathbb{R} ^n \mapsto \mathbb{R} $$
+\par
+在此问题上，有经典的梯度下降算法（Gradient Descent Algorithm）：
+\begin{equation}
+    x_{k+1} = x_{k} - \eta_{k} \nabla f(x_{k}) %\label{GD0}
+\end{equation}
+其中$\eta_{k}$为第$k$步迭代的步长，
+$\nabla f(x_{k})$为$f(x)$在$x_{k}$这一点上的梯度（假设$f(x)$的性质足够好）。
+以上的迭代运算可被重写为：
+$$ \frac{x_{k+1}-x_{k}}{\eta_{k}} =  -\nabla f(x_{k})$$
+上式可以看作如下ODE方程的显式欧拉插值算法每一步的迭代操作。
+
+\begin{equation}
+    \frac{dX(t)}{dt} =  -\nabla f(x_{k}) %\label{GD0}
+\end{equation}
+
+由此，梯度下降算法可以看作是欧几里得空间上的梯度流的离散插值形式。
+现在先简单证明一下此梯度流可以保证，
+在$f:\mathbb{R}^{n}\rightarrow\mathbb{R}$为凸函数时，随机过程$X(t)$是趋近于最优点的。
+\begin{proof}
+    令 $     g(X(t)=\frac{1}{2}\Arrowvert X(t)-x^* \Arrowvert^2)$,其中$x^*=argminf(x)$,则有：
+    \begin{equation}
+        \begin{aligned}
+            \frac{dg(X(t))}{dt}&=\frac{dg(X(t))}{dX(t)}\frac{dX(t)}{dt}\\
+           &=\langle  \frac{dX(t)}{dt},X(t)-x^*  \rangle\\
+           &= - \langle  \nabla_x f(X(t)),X(t)-x^*  \rangle\\
+           &=  \langle  \nabla_x f(X(t)),x^*-X(t)  \rangle\\
+           &\leqslant f(x^*)-f(X(t))\\
+           &\leqslant 0
+        \end{aligned}
+    \end{equation}
+    第一个不等式来自于$f(x)$的凸性质。\newline
+    可见$g(X(t))$随着时间$t$减小，$X(t)$逐步逼近$x^*$。
+\end{proof}
+
+\par
+让我们再一次审视$\frac{dX(t)}{dt} =  -\nabla f(x_{k}) $，这是一个处处由$-\nabla f(x)$ 定义的向量场。
+回顾多元微积分中梯度的概念，梯度存在的时候可以由
+$\nabla f(x) = [ \frac{\partial  f(\cdot )}{\partial  x_1} 
+,\dots,\frac{\partial  f(\cdot )}{\partial  x_n}] $
+进行计算，但这并不是梯度这一概念的定义，更不是梯度这一概念的本质。
+接下来我将先介绍梯度的定义，而后介绍梯度的本质。
+只有理解了欧几里得空间中梯度的深层内涵，才有可能理解概率空间上的变分（variation）操作。
+
+\par
+以$f:\mathbb{R} ^n\mapsto \mathbb{R} $为例，首先定义方向导数
+\begin{definition}
+    函数$f$在$\widehat{x} $这一点处关于方向$h\in \mathbb{R}^n$的方向导数定义为：
+    \begin{equation}
+        f'(\widehat{x},h) = \lim_{t\to 0}\frac{f(\widehat{x}+th)-f(\widehat{x})}{t}  
+    \end{equation}
+\end{definition}
+
+接下来给出加托可微性和梯度的定义。
+\begin{definition}
+    当方向导数$f'(\widehat{x},h) ,h\in \mathcal{X} $关于$h$是一个线性系统（满足数乘保持性和加法保持性）时，即
+    $f'(\widehat{x},h) = \mathcal{A} (h)$（其中$\mathcal{A} $是某个线性算子）时，
+    我们说$f$在$\widehat{x}$这一点加托-可微。
+\end{definition}
+
+根据泛函分析中的里茨表示定理（Riesz representation theorem），$\mathbb{R} ^n$
+空间上的线性算子构成的对偶空间与原始空间同构。考察$(\mathbb{R} ^n,<\cdot,\cdot>_2)$这一Hilbert空间，
+则对于任意一个光滑的线性映射$l:\mathbb{R} ^n \mapsto \mathbb{F} \in \{\mathbb{R} ,\mathbb{C} \} $，
+有唯一一个$x_{l } \in \mathbb{R} ^n $,使得$\forall x \in \mathbb{R} ^n ,l(x) = \langle x_{l } ,x\rangle $。
+\par
+所以$f:\mathbb{R} ^n\mapsto \mathbb{R} $在某一点的梯度实际上是将加托-可微线性算子写作了一个向量，
+梯度的内涵是$f$在$\widehat{x}$邻域内的线性近似。回忆一下，这和我们当年学习的一阶泰勒展开是吻合的。
+$$f(\widehat{x}+h) \approx f(x)+\mathcal{A} (h)+\mathcal{O} (\parallel h\parallel )$$
+
+其中$\mathcal{A}$是一个光滑的线性算子，重写线性算子为内积形式，记作：
+$$f(\widehat{x}+h) \approx f(x)+\left\langle  \nabla f(\widehat{x}),h \right\rangle +\mathcal{O} (\parallel h\parallel )$$
+
+\par 
+从这一角度对梯度进行理解之后，我们可以模仿梯度的定义来定义概率分布的变分，进一步地，将梯度流拓展到概率空间，。

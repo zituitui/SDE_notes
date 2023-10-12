@@ -1,0 +1,158 @@
+\section{Computational Complexity}
+我们定义$L,(P,r,\gamma)$是确定一个MDP所需的bit-size，假定算术运算+，-，$\times$，$\div$都使用单位时间(unit time)。我们希望找到一个算法，它能找到在$L,(P,r,\gamma)$、$|mathcal{S}|$、$|mathcal{A}|$的多项式时间内找到最优策略。
+如果一个算法能在$|S|$、$|A|$的多项式时间（与$L,(P,r,\gamma)$无关）内找到最优策略，则称该算法为strongly polynomial。
+\subsection{Value Iteration}
+\begin{lemma}[收缩性]
+    对任意两个向量$Q$，$Q'\in \mathbb{R}^{|mathcal{S}||mathcal{A}|}$,$\Vert \tau Q-\tau Q' \Vert_\infty\leq\gamma\Vert Q-Q' \Vert_\infty$。
+    这说明了$\tau$是一个收缩映射。
+ \end{lemma}
+\begin{proof}
+    首先证明对于所有的$s\in \mathcal{S},|V_Q(s)-V_{Q'(s)}|\leq \underset{a\in \mathcal{A}}{max}|Q(s,a)-Q'(s,a)|$。\\
+    不妨设$V_Q(s)>V_{Q'}(s)$(另一半是对称的)，记$a^*=\underset{a}{argmax}Q(s,a)$。\\
+    $|V_Q(s)-V_{Q'(s)}|=\underset{a\in\mathcal{A}}{max}Q(s,a)-\underset{a\in\mathcal{A}}{max}Q'(s,a)\leq Q(s,a^*)-Q'(s,a^*)\leq\underset{a\in\mathcal{A}}{max}|Q(s,a)-Q'(s,a)|$
+    \begin{equation}
+        \begin{aligned}
+            \Vert \tau Q-\tau Q' \Vert_\infty &= \Vert r+\gamma PV_Q-r-\gamma PV_{Q'} \Vert_\infty\\
+            &= \gamma \Vert P(V_Q-V_{Q'}) \Vert_\infty\\
+            &\leq \gamma \Vert V_Q-V_{Q'} \Vert_\infty\\
+            &= \gamma \underset{s}{\max}|V_Q-V_{Q'}|\\
+            &\leq \underset{s}{\max}\underset{a}{\max}|Q(s,a)-Q'(s,a)|\\
+            &= \gamma\Vert Q-Q' \Vert_\infty
+        \end{aligned}
+    \end{equation}
+\end{proof}
+由该引理可见，经历了k次迭代后，$\Vert Q_k-Q^* \Vert_\infty\leq\gamma^k\Vert Q_0-Q^*\Vert_\infty$，因此$\underset{k\to \infty}{\lim}Q_k-Q^*=0$,算法收敛。
+
+\begin{lemma}[Q-Error Amplification)]
+    对任意向量$Q\in \mathbb{R}^{|mathcal{S}||mathcal{A}|},V^{\pi_Q}\geq V^*-\frac{2\Vert Q-Q^*\Vert_\infty}{1-\gamma}\mathbbm{1}$
+    \\其中$\mathbbm{1}$为全1向量。
+ \end{lemma}
+\begin{proof}
+    对于固定的$s$以及$a=\pi_Q(s),(\pi_Q(s)=\underset{a\in \mathcal{A}}{argmax}Q(s,a))$
+    \begin{equation}
+        \begin{aligned}
+            V^*(s)-V^{\pi_Q}(s)&=Q^*(s,\pi^*(s))-Q^{\pi_Q}(s,a)\\
+            &=Q^*(s,\pi^*(s))-Q^*(s,a)+Q^*(s,a)-Q^(\pi_Q)(s,a)\\
+            &=Q^*(s,\pi^*(s))-Q^*(s,a)+\gamma \mathbb{E}_{s'\sim P(\cdot |s,a)}[V^*(s')-V^{\pi_Q}(s')]\\
+            &\leq Q^*(s,\pi^*(s))-Q(s,\pi^*(s))+Q(s,a)-Q^*(s,a)+\gamma \mathbb{E}_{s'\sim P(\cdot |s,a)}[V^*(s')-V^{\pi_Q}(s')]\\
+            &\leq 2\Vert Q-Q^* \Vert_\infty+\gamma\Vert V^*-V^{\pi_Q}\Vert_\infty
+        \end{aligned}
+    \end{equation}
+\end{proof}
+
+\begin{theorem}[Q-value iteration convergence]
+    设$Q^{(0)}=0,Q^{(k+1)}=\tau Q^{(k)},k=0,1,\ldots \pi^{(k)=pi_{Q^{(k)}}}$,当$k\geq \frac{\log \frac{2}{(1-\gamma )^2\epsilon}}{1-\gamma}$,\\
+    $V^{\pi^{(k)}}\geq V^*-\epsilon \mathbbm{1}$，即k次迭代后$V^{\pi^{(k)}}$和$V^*$非常接近。
+\end{theorem}
+\begin{proof}
+    $\Vert Q^{(k)}-Q^*\Vert_\infty=\Vert \tau ^kQ^{(0)}-\tau ^kQ^*\Vert_\infty \leq\gamma^k\Vert Q^{(0)}-Q^*\Vert_\infty=(1-()1-\gamma)^k\leq \frac{exp(-(1-\gamma)k)}{1-\gamma} $
+\end{proof}
+
+\subsection{Value Iteration}
+策略迭代算法从任意一个策略$\pi_0$出发，并对k=0,1,2,$\ldots $重复接下来的两步：
+1.策略评估。计算$Q^{\pi_k}$\\
+2.策略提升。更新策略：$\pi_{k+1}=\pi_{Q^{\pi_k}}$,即$\pi_{k+1}(s)=\underset{a\in\mathcal{A}}{argmax}Q^{\pi_k}(s,a)$
+
+\begin{lemma}
+    1.$Q^{\pi_{k+1}}\geq \tau Q^{\pi_k}\geq Q^{\pi_k}$\\
+    2.$\Vert Q^{\pi_{k+1}}-Q^* \Vert_\infty\leq\gamma\Vert Q^{\pi_k}-Q^* \Vert_\infty$
+\end{lemma}
+\begin{proof}
+    首先证明$\tau Q^{\pi_k}\geq Q^{\pi_k}$。注意到策略迭代中的策略都是确定策略，䫅对于所有$k,s$，$V^{\pi_k}(s)=Q^{\pi_k}(s,\pi_k(s))$。\\
+    \begin{equation}
+        \begin{aligned}
+            \tau Q^{\pi_k}(s,a)&=r(s,a)+\gamma \mathbb{E}_{s'\sim P(\cdot |s,a)}[\underset{a'}{\max}Q^{\pi_k}(s',a')]\\
+            &\geq r(s,a)+\gamma\mathbb{E}_{s'\sim P(\cdot |s,a)}[Q^{\pi_k}(s',\pi_k(s'))]=Q^{\pi_k}(s,a)
+        \end{aligned}
+    \end{equation}
+    \\再证明$Q^{\pi_{k+1}}\geq \tau Q^{\pi_k}$，这需要先证明$Q^{\pi_{k+1}}\geq Q^{\pi_k}$：\\
+    $Q^{\pi_k}=r+\gamma P^{\pi_k}Q^{\pi_k}\leq r+\gamma P^{\pi_{k+1}}Q^{\pi_k}\leq \sum_{t=0}^{\infty}\gamma^t(P^{\pi_{k+1}})^tr=Q^{\pi_{k+1}}$\\
+    第一个不等式是因为$\pi_{k+1}$是greedy policy，所以一定比$\pi_{k}$更好，第二个不等式由递归得到。\\因此
+    \begin{equation}
+        \begin{aligned}
+            Q^{\pi_{k+1}}(s,a)&=r(s,a)+\gamma \mathbb{E}_{s'\sim P(\cdot |s,a)}[Q^{\pi_{k+1}}(s',\pi_{k+1}(s'))]\\
+            &\geq r(s,a)+\gamma \mathbb{E}_{s'\sim P(\cdot |s,a)}[Q^{\pi_{k}}(s',\pi_{k+1}(s'))]\\
+            &=r(s,a)+\gamma \mathbb{E}_{s'\sim P(\cdot |s,a)}[\underset{a'}{\max}Q^{\pi_k}(s',a')]=\tau Q^{\pi_k}(s,a)
+        \end{aligned}
+    \end{equation}
+    （1）式证明完成。
+    下面证明（2）式：\\
+    $\Vert Q^*-Q^{\pi_{k+1}} \Vert_\infty\leq\Vert Q^*-\tau Q^{\pi_{k}} \Vert_\infty =\Vert \tau Q^*-\tau Q^{\pi_{k}} \Vert_\infty\leq\gamma\Vert Q^*-Q^{\pi_k} \Vert_\infty$\\
+    证明完成。
+\end{proof}
+
+\begin{theorem}[Policy iteration convergence]
+    设$Q^{\pi_0}=0,\pi_0$为任意初始策略。当$k\geq \frac{\log\frac{1}{(1-\gamma )\epsilon}}{1-\gamma} $，第k个策略有这样的performance bound:\\
+    $Q^{\pi_k}\geq Q^*-\epsilon $
+\end{theorem}
+
+\begin{proof}
+    \begin{equation}
+        \begin{aligned}
+            \Vert Q^*-Q^{\pi_k}\Vert_\infty&\leq\gamma\Vert Q^*-Q^{\pi_{k-1}}\Vert_\infty
+            &\leq \gamma^k\Vert Q^*-Q^{\pi_0}\Vert_\infty
+            &=\gamma^k\Vert Q^\Vert_\infty
+            &=(1-(1-\gamma))^k\Vert Q^\Vert_\infty
+            &\leq \frac{\exp (-(1-\gamma)k)}{1-\gamma} 
+        \end{aligned}
+    \end{equation}
+\end{proof}
+
+
+\subsection{Linear Programming Approach}
+线性规划的方法可以在严格多项式时间内解决问题。\\
+\subsubsection{原始问题}
+最初的想法是求解\\
+$\qquad\underset{V\in \mathbb{R}^{|\mathcal{S}|}}{\min}\qquad{\sum_s\mu (s)V(s)}$\\
+subject to  $V(s)\geq\underset{a\in \mathcal{A}}{\max}[r(s,a)+\gamma\underset{s'}{\sum}{P(s'|s,a)V(s')}] \qquad \forall s\in\mathcal{S}$\\
+但这不是LP问题。将其转化为LP问题，得到：\\
+$\qquad\underset{V\in \mathbb{R}^{|\mathcal{S}|}}{\min}\qquad{\sum_s\mu (s)V(s)}$\\
+subject to  $V(s)\geq r(s,a)+\gamma\underset{s'}{\sum}{P(s'|s,a)V(s')} \qquad \forall a\in\mathcal{A},s\in\mathcal{S} $\\
+其中，$\mu (s)$是初始状态分布。如果$\mu$ has full support,那么该问题的唯一解就是$V^*(s)$。
+\begin{proof}
+    证明利用了$\tau$的单调性，即$V \geq V^{'}$时，有$\tau V \geq \tau V^{'}$。\\
+    令$V'=\tau V$，则$\tau V\geq\tau V'=\tau^2V$。迭代得到：$V\geq\tau^\infty=V^*$。\\
+    因此该约束条件下得到的解都是$V\geq V^*$的情况，由于目标函数是求$\qquad\underset{V\in \mathbb{R}^{|\mathcal{S}|}}{\min}\qquad{\sum_s\mu (s)V(s)}$，最终得到的解即$V=V^*$。
+\end{proof}
+\subsubsection{对偶问题}
+对每一个LP都存在一个对偶问题，原问题的决策变量对应对偶问题的约束条件，原问题的约束条件对应对偶问题的决策变量。\\
+对于固定的策略$\pi$，定义关于状态和动作的visitation measure：
+\begin{equation}
+    d^{\pi}_{s_0}(s,a)=(1-\gamma)\sum_{t=0}^{\infty}\gamma^tPr^\pi (s_t=s,a_t=a|s_0)
+\end{equation}
+其中$Pr^\pi (s_t=s,a_t=a|s_0)$是从状态$s_0$出发，经过策略$\pi$，到达$s_t=s,a_t=a$的概率。并记$d^{\pi}_{\mu}(s,a)=\mathbb{E}_{s_0\sim\mu}[d^{\pi}_{s_0}(s,a)]$\\
+对于任意的状态$s$有：
+\begin{equation}
+    \underset{a}{\sum}d^{\pi}_{\mu}(s,a)=(1-\gamma)\mu(s)+\gamma\underset{s',a'}{\sum}P(s|s',a')d^{\pi}_{\mu}(s',a')
+\end{equation}
+
+\begin{proof}
+    左边：\\
+    \begin{equation}
+        \begin{aligned}
+            \underset{a}{\sum}d^{\pi}_{\mu}(s,a)&=d^{\pi}_{\mu}(s)\\
+           &=\underset{s_0\sim \mu}{\mathbb{E}}[d^{\pi}_{s_0}(s)]\\
+           &=\underset{s_0\sim \mu}{\mathbb{E}}[(1-\gamma)\sum_{t=0}^{\infty}\gamma^tPr^{\pi}(s_t=s|s_0)]
+        \end{aligned}
+    \end{equation}
+    右边：
+    \begin{equation}
+        \begin{aligned}
+            &\gamma\underset{s',a'}{\sum}P(s|s',a')d^{\pi}_{\mu}(s',a')+(1-\gamma)\mu(s)\\
+            =&\gamma\underset{s',a'}{\sum}P(s|s',a')\underset{s_0\sim \mu}{\mathbb{E}}[(1-\gamma)\sum_{t=0}^{\infty}\gamma^tPr^{\pi}(s_t=s',a_t=a'|s_0)]+(1-\gamma)\mu(s)\\
+            =&\underset{s_0\sim \mu}{\mathbb{E}}[(1-\gamma)\sum_{t=0}^{\infty}\sum_{s',a'}\gamma^{t+1}P(s|s',a')Pr^{\pi}(s_t=s',a_t=a'|s_0)]+(1-\gamma)\mu(s)\\
+            =&\underset{s_0\sim \mu}{\mathbb{E}}[(1-\gamma)\sum_{t=0}^{\infty}\sum_{s',a'}\gamma^{t+1}Pr^{\pi}(s|s_0)]+(1-\gamma)\mu(s)\\
+            =&\underset{s_0\sim \mu}{\mathbb{E}}[(1-\gamma)\sum_{t=0}^{\infty}\gamma^tPr^{\pi}(s_t=s|s_0)]\\
+        \end{aligned}
+    \end{equation}
+    所以左边=右边。
+\end{proof}
+定义一个状态-动作多面体：\\
+$\mathcal{K}_\mu :=\{d|d\geq 0\quad and \quad \sum_a d(s,a)=(1-\gamma)\mu (s)+\gamma\sum_{s',a'}P(s|s',a')d(s',a')\}$\\
+可以看到，$\mathcal{K} _\mu$是所有可以的状态-动作分别的集合，即$d\in\mathcal{K} _\mu$当且仅当存在一个平稳的策略$\pi$使得$d^{\pi}_{\mu}=d$。\\
+有了这些定义，对偶问题可以写成：\\
+$\max\qquad\quad \frac{1}{1-\gamma}\sum_{s,a}d_\mu(s,a)r(s,a) $\\
+subject to  $d\in \mathcal{K}_{\mu}$\\
+目标函数可以看作是每个状态-动作对的密度乘上奖励，加权求和来求总奖励，求这个总奖励的最大值。解这个对偶LP求得一个解$d^*$,那么就可以求得最优策略：\\
+$\pi^*(s,a)=\frac{d^*(s,a)}{\sum_{a'}d^*(s,a')}$\\
+另一种求最优策略的方法是求$\underset{a}{argmax}\quad d^*(s,a')$。
