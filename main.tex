@@ -1,10 +1,10 @@
 \documentclass{article}
-
+\bibliographystyle{main}
 \usepackage[UTF8]{ctex}
 
 \usepackage{graphicx} 
 \usepackage{subfigure}
-
+\usepackage{bibentry}
 \usepackage{booktabs}
 \usepackage[mathscr]{eucal}
 \usepackage{amsfonts}
@@ -12,6 +12,7 @@
 \usepackage{amssymb}
 \usepackage{amsthm}
 \usepackage{bm}
+\usepackage{natbib}
 \usepackage{bbm}
 \usepackage{cases}
 \usepackage{footmisc}
@@ -29,6 +30,7 @@
 \renewcommand{\algorithmcfname}{算法}
 \author{WangFangyikang}
 
+
 \allowdisplaybreaks
 
 \begin{document}
@@ -42,10 +44,17 @@
     \input{content/s1/1-0.tex}
     \input{content/s1/1-1.tex}
     \input{content/s1/1-2.tex}
+
+    \newpage
+    \input{content/s2/2-0.tex}
     % \newpage
     % %\input{content/1-BellmanEquation.tex}
     % \input{content/section1.tex}
     % \newpage
     % \input{content/section2.tex}
 
+    \clearpage
+    \bibliography{main}
+
+    
 \end{document}

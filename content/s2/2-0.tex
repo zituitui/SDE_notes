@@ -1,0 +1,46 @@
+\section{Ordinary Differential Equations}
+To better understand the behavior of SDE, we can first take a look at its non-random counterpart, i.e., ODEs (Ordinary Differential Equations).
+
+
+\begin{equation}
+    \mathrm{d}X(t) = f(t,X(t)) \mathrm{d}t,X(0)=X_0\tag{ODE}
+    \label{ODE}
+\end{equation}
+
+Example: Linear ODE, i.e., $ f(t,X(t)) = L X(t)$
+
+\begin{equation}
+    \begin{aligned}
+        \frac{\mathrm{d}}{\mathrm{d}t}e^{-tL}X(t)
+        &=-e^{-tL}LX(t)+e^{-tL}\frac{\mathrm{d}}{\mathrm{d}t}X(t)\\
+       &=e^{-tL}\left( \frac{\mathrm{d}}{\mathrm{d}t}X(t)-LX(t) \right) =0\\
+       &\Rightarrow e^{-tL}X(t)=e^{-tL}X(t)\vert_{t=0} =X_0\\
+       &\Rightarrow X(t) = e^{tL}X_0\\
+    \end{aligned}
+\end{equation}
+
+Next we look at the conception of Principle Flow proposed in \citet{rosca2023on}, consider minimizing the quadratic objective $f(x) = \frac{1}{2}x^THx$, assuming that $H$ is positive definite.
+
+Consider the Gradient Descent Dynamic here:
+$$
+X^{n+1} = X^n-\eta\nabla\mathcal{L}(x) = X^n - \eta H X^n = (1-\eta H)X^n
+$$
+Therefore $X^{n} = (1-\eta H)^nX_0$, if we want to have $X^n = X(n\eta)$ for all $n$, we should have:
+$$
+(1-\eta H)^n = e^{n\eta L}\Rightarrow L = \frac{\log (1-\eta H)}{\eta}
+$$
+We obtain $\mathrm{d}X(t) = \frac{\log(1-\eta H)}{\eta}X(t)\mathrm{d}t$, which is the Principle Flow in the quadratic case. This can be generalized to the non-linear case:
+$$
+\mathrm{d}X(t) = \sum_{i = 1}^{d}  \frac{\log(1-\eta\lambda_i)}{\eta \lambda_i}\nabla\mathcal{L}(X(t))^T u_i\cdot u_i,
+$$
+where $\nabla^2\mathcal{L}(X(t)) = \sum_{i = 1}^{d}  \lambda_i u_iu_i^T$ is the SVD of $\nabla^2\mathcal{L}(X(t))$.
+This generalization is derived in the sense of "backwards error analysis":
+\begin{align}\label{backward error analysis}
+    \left\{
+     \begin{aligned}
+         &\dot{\theta} = - \nabla\mathcal{L}(\theta) + \eta f_1(\theta) + \dots  + \eta ^nf_n(\theta) , \\
+         &\theta^{n+1} = \theta^n -\eta \nabla\mathcal{L}(\theta^n), 
+     \end{aligned}\right.
+ \end{align}
+We want to have $\theta^{n+1} = \theta(n\eta+\eta)$ and $\theta^n = \theta(n\eta)$
+
