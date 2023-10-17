@@ -1,0 +1,12 @@
+\subsection{Existence and Uniqueness of the solution to the ODE}
+Picard iteration: start from the initial guess $\varphi_0(t)=X_0$,
+recursively compute
+$$\varphi_{n+1}(t) = X_0+\int_{t_0}^{t} f(\varphi_n(\tau),\tau) \,\mathrm{d}\tau. $$
+If $f$ is continuous in both $x$ and $t$ and Lipschitz continuous in $x$, then:
+$$
+\lim_{n \to \infty}  \varphi_n(t) = X(t)
+$$
+
+
+
+

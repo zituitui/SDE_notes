@@ -1,4 +1,30 @@
+\subsection{Numerical Solvers for ODE}
+Write the ODE in the integral form:
+$$
+X(t+\Delta  t) = X(t) + \int_{t}^{t+\Delta t} f(X(\tau  ),\tau  )  \,\mathrm{d}\tau  
+$$
 
+Explicit Euler method:
+$$
+\overline{X} (t+\Delta  t)= X(t) + \int_{t}^{t+\Delta t} f(X(t  ),t  )  \,\mathrm{d}\tau  
+$$
 
+Implicit Euler method:
+$$
+X(t+\Delta  t)= X(t) + \int_{t}^{t+\Delta t} f(X(t+\Delta t),t+\Delta t)  \,\mathrm{d}\tau  
+$$
 
+Heun method:
+$$
+X(t+\Delta  t)=  X(t) + \frac{1}{2}\int_{t}^{t+\Delta t} f(X(t),t) + f(\overline{X}(t+\Delta t),t+\Delta t) \,\mathrm{d}\tau  
+$$
 
+Fourth order Runge-Kutta method:
+\begin{align*}
+&\Delta X_k^1 = f(\widehat{X}(t_k),t_k )\Delta t\\
+&\Delta X_k^2 = f(\widehat{X}(t_k)+\Delta X_k^1/2,t_k+\Delta t/2 )\Delta t\\
+&\Delta X_k^3 = f(\widehat{X}(t_k)+\Delta X_k^2/2,t_k+\Delta t/2 )\Delta t\\
+&\Delta X_k^4 = f(\widehat{X}(t_k)+\Delta X_k^3,t_k+\Delta t )\Delta t\\
+&\widehat{X}(t_{k+1}) = \widehat{X}(t_{k})+\frac{1}{6}(\Delta X_k^1+2\Delta X_k^2+2\Delta X_k^3+\Delta X_k^4)
+\end{align*}
+Order of approximation: $\left\lvert \widehat{X}(t_M)-X(t_M)\leq k\Delta t^P\right\rvert ,M = \frac{1}{\Delta t}$
