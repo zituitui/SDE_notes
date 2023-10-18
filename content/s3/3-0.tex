@@ -1,0 +1,29 @@
+\section{Heuristic Derivation of SDE}
+For SDE, we assume $\mathrm{d}W_t \sim N(0,\mathrm{d}t)$ and SDE writes:
+$$
+\mathrm{d}X_t = FX_t\mathrm{d}t + \sqrt{\widehat{\Sigma } } \mathrm{d}W_t
+$$
+Then,
+\begin{equation*}
+    \begin{aligned}
+        &\mathrm{d}\exp(-Ft)X_t\\
+        =&-F\cdot\exp(-Ft)X_t\mathrm{d}t+\exp(-Ft)\mathrm{d}X_t\\
+        =&\exp(-Ft)\sqrt{\widehat{\Sigma}}\mathrm{d}W_t\\
+        \Rightarrow& \exp(-Ft)X_t = X_0+\int_{0}^{t}  \exp(-F\tau)\sqrt{\widehat{\Sigma}}\,\mathrm{d}W_\tau\\
+        \Rightarrow& X_t = \exp(Ft)X_0+\exp(F(t-\tau))\sqrt{\widehat{\Sigma}}\,\mathrm{d}W_\tau
+    \end{aligned}
+\end{equation*}
+So we know that $X_t$ remains Gaussian given $X_0 \sim N(m_0,P_0)$.
+\begin{equation*}
+    \begin{aligned}
+        m_t=&\mathbb{E} X_t = \exp(F_t)m_0\\
+        P_t=&\mathbb{E}\left[ (X_t-m_t)(X_t-m_t)^T \right] \\
+        =&\exp(Ft)P_0\exp(Ft)^T + \int_{0}^{t} \exp(F(t-\tau))\widehat{\Sigma}\exp(F(t-\tau))^T \,d\tau
+    \end{aligned}
+\end{equation*}
+
+
+
+
+
+
