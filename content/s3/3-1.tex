@@ -1,0 +1,29 @@
+\subsection{Informal derivation of Xiang's approach}
+Consider the stochastic dynamics $(d=1)$:
+$$
+X^{n+1}=X^n-\eta\left( HX^n+\sqrt{\Sigma}Z^{n} \right) ,Z^{n}\sim N(0,I)
+$$
+so, $X^n$ remains Gaussian.
+\begin{equation*}
+    \begin{aligned}
+        &X^{n+1}=\left(1-\eta H\right) X^n-\eta \sqrt{\Sigma}Z^{n} \\
+        \Rightarrow& \frac{X^{n+1}}{\left(1-\eta H\right)^{n+1}} = \frac{X^{n}}{\left(1-\eta H\right)^{n}}-\frac{\eta \sqrt{\Sigma}Z^{n}}{\left(1-\eta H\right)^{n+1}}\\
+        \Rightarrow& \frac{X^{n}}{\left(1-\eta H\right)^{n}} =X^0 - \eta\sqrt{\Sigma}\sum_{i = 1}^{n}\frac{Z^i}{\left(1-\eta H\right)^{i}} \\
+        \Rightarrow& X^{n} =\left(1-\eta H\right)^{n}X^0 -\eta\sqrt{\Sigma}\sum_{i = 1}^{n}\left(1-\eta H\right)^{n-i}Z^i
+    \end{aligned}
+\end{equation*}
+We can further calculate its mean and variance:
+$$
+m^n = \mathbb{E} X^n = (1-\eta H)^n \mathbb{E} X^0
+$$
+\begin{equation*}
+    \begin{aligned}
+        \mathbb{E}\left[ (x^n-m^n)(x^n-m^n)^T \right] =& \eta^2\Sigma  \sum_{i = 1}^{n}(1-\eta H)^{2(n-i)}\\
+        =&\eta^2\Sigma \sum_{i = 0}^{n-1}(1-\eta H)^{2i}\\
+        =&\eta^2\Sigma\frac{1-(1-\eta H)^{2n}}{1-(1-\eta H)^2}
+    \end{aligned}
+\end{equation*}
+
+
+
+

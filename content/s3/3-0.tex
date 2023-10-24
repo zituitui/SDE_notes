@@ -1,4 +1,5 @@
 \section{Heuristic Derivation of SDE}
+\subsection{Linear SDE}
 For SDE, we assume $\mathrm{d}W_t \sim N(0,\mathrm{d}t)$ and SDE writes:
 $$
 \mathrm{d}X_t = FX_t\mathrm{d}t + \sqrt{\widehat{\Sigma } } \mathrm{d}W_t
@@ -21,7 +22,7 @@ So we know that $X_t$ remains Gaussian given $X_0 \sim N(m_0,P_0)$.
         =&\exp(Ft)P_0\exp(Ft)^T + \int_{0}^{t} \exp(F(t-\tau))\widehat{\Sigma}\exp(F(t-\tau))^T \,d\tau
     \end{aligned}
 \end{equation*}
-
+, which reveals the property of OU process.
 
 
 
