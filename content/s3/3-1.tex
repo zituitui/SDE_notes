@@ -23,6 +23,37 @@ $$
         =&\eta^2\Sigma\frac{1-(1-\eta H)^{2n}}{1-(1-\eta H)^2}
     \end{aligned}
 \end{equation*}
+Following the idea of principle flow, first we let the mean of two meet:
+\begin{equation*}
+    \begin{aligned}
+        &(1-\eta H)^n = \exp(Fn\eta)\\
+        \Rightarrow& F = \log(1-\eta H)/\eta
+    \end{aligned}
+\end{equation*}
+then look at the variance:
+$$
+\int_{0}^{t} \exp(F(t-\tau))\widehat{\Sigma}\exp(F(t-\tau))^T \,d\tau = \eta^2\Sigma\frac{1-(1-\eta H)^{2n}}{2\eta H-(\eta H)^2}
+$$
+For the left side, we have:
+\begin{equation*}
+    \begin{aligned}
+        \int_{0}^{t} \exp(F(t-\tau))\widehat{\Sigma}\exp(F(t-\tau))^T \,d\tau &= \frac{1}{2F}\exp(2F\tau)\mid _0^{t}\widehat{\Sigma}\\
+        &=\frac{1}{2F}\widehat{\Sigma}\cdot(\exp(2Fn\eta)-1)\\
+        &=\frac{(1-\eta H)^{2n}-1}{2F}\cdot\widehat{\Sigma}
+    \end{aligned}
+\end{equation*}
+So,
+\begin{equation*}
+    \begin{aligned}
+        &\frac{(1-\eta H)^{2n}-1}{2F}\cdot\widehat{\Sigma} =  \eta^2\Sigma\frac{1-(1-\eta H)^{2n}}{2\eta H-(\eta H)^2}\\
+        \Rightarrow& \widehat{\Sigma} = -\frac{2F\cdot\eta^2\cdot\Sigma}{2\eta H - \eta^2H^2} = \frac{2\Sigma\log(1-\eta H)}{H(H\eta-2)}
+    \end{aligned}
+\end{equation*}
+
+
+
+
+
 
 
 
