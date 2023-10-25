@@ -1,0 +1,20 @@
+\subsection{\ito's formula}
+We directly assume the \ito's formula to be true.
+For SDE: $\mathrm{d}X_t = -(t,X_t)\mathrm{d}t + L(t,X(t))\mathrm{d}W_t$
+
+
+
+\begin{theorem}
+(\ito formula). Assume that $X(t)$ is an \ito process, and consider an arbitrary (scalar) function $\phi(X(t),t)$ of the process. Then the \ito differential of $\phi $, that is, the \ito SDE for $\phi$ is given as
+\begin{equation*}
+    \begin{aligned}
+        \mathrm{d}\phi &= \frac{\partial \phi}{\partial t}+\sum_{i}\frac{\partial\phi}{\partial x_i}\mathrm{d}x_i+\frac{1}{2}\sum_{i,j}(\frac{\partial^2\phi}{\partial x_i\partial x_j})\mathrm{d}x_i \mathrm{d}x_j\\
+        &=\frac{\partial\phi}{\partial t}\mathrm{d}t+(\nabla\phi)^T\mathrm{d}x+\frac{1}{2}\nabla^2\phi:LL^T\mathrm{d}t
+    \end{aligned}
+\end{equation*}
+where $A:B = tr(A^TB)$
+\end{theorem}
+As a sanity check, consider $X(t) = W(t)$ (i.e. $f\equiv 0,L=I$) and $\phi(x) = \frac{1}{2}x^2$, then
+$$
+\mathrm{d} \phi(X(t)) = X(t)\cdot \mathrm{d}W(t)+\frac{1}{2}\mathrm{d}t = W(t)\mathrm{d}W(t)+\frac{1}{2}\mathrm{d}t
+$$

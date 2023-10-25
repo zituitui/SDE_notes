@@ -1,0 +1,16 @@
+\newcommand{\ito}{Ito }
+\section{\ito Calculus and SDE}
+\subsection{Stochastic Integral}
+
+SDE should be understood as a shorthand of the stochastic integrated equation:
+$$
+X(t)=X(0)+\int_{0}^{t} f(\tau,X(\tau))\mathrm{d}\tau + \int_{0}^{t}L(\tau,X(\tau))\mathrm{d}W_\tau
+$$
+where the integral w.r.t. the Brownian motion should be understood as the limit:
+$$
+\int_{t_0}^{t}L(\tau,X(\tau))\mathrm{d}W(\tau) = \lim_{n \to \infty}  \sum_{k}L(t_k,X(t_k))\left[ W(t{k+1})-W(t_k) \right] 
+$$
+where $t_0<t_1<\dots<t_n = t$ is a partition of $[0,t]$ and $\min t_{i+1} - t_i \to 0$ as $n\to \infty$.
+We would not make this definition rigorous in this overview. This would be the main objective of this course.
+
+
