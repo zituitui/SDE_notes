@@ -1,0 +1,43 @@
+\section{Evolution of the Distribution}
+\subsection{Forward and Backward Kolmogorov's equation}
+Fokker-Planck equation: Let $p(x,t)$ be the density of $X(t)$, where $X(0) \sim p(x,0)$ and
+$$
+\mathrm{d}X(t) = f(t,X(t))\mathrm{d}t + \sqrt{2\Sigma(t,X(t))}\mathrm{d}W_t
+$$ 
+We have:
+$$
+\frac{\partial}{\partial t}p+\nabla\cdot(pf) = \nabla\cdot(\nabla\cdot \Sigma p)
+$$
+where for a matrix field, $\nabla\cdot$ is applied row-wisely.
+\begin{proof}
+Consider a twice differentiable function $\phi$.
+$$
+\mathbb{E}[\phi(X_t)]=\int \phi(x)p(t,x)\mathrm{d}x
+$$ 
+Using \ito's Lemma, we have:
+$$
+\mathrm{d}\phi(X_t) = (\nabla\phi\cdot f+\nabla^2\phi:\Sigma)\mathrm{d}t+\nabla\phi\cdot\sqrt{2\Sigma}\mathrm{d}W_t
+$$
+\begin{equation*}
+    \begin{aligned}
+        \mathbb{E}\left[\phi(X_t)\right]=& \mathbb{E} \left[ \phi(X_0) + \int_{0}^{t}(\nabla\phi\cdot f+\nabla^2\phi:\Sigma)\mathrm{d}\tau +\int_{0}^{t} \nabla\phi\cdot\sqrt{2\Sigma}\mathrm{d}W_\tau \right] \\
+        =&\mathbb{E}\left[\phi(X_0)\right] + \int_{0}^{t}\mathbb{E}(\nabla\phi\cdot f+\nabla^2\phi:\Sigma)\mathrm{d}\tau
+    \end{aligned}
+\end{equation*}
+\begin{equation*}
+    \begin{aligned}
+        \frac{\mathrm{d}}{\mathrm{d}t}\mathbb{E}\left[\phi(X_t)\right]=& \mathbb{E}_{x\sim p(t,x)}\left[  \nabla\phi(x)\cdot f(t,x)+\nabla^2\phi(x):\Sigma(t,x)\right] \\
+        =&\int \nabla\phi(x)\cdot f(t,x)\cdotp(t,x)+\nabla^2\phi(x):\Sigma(t,x)\cdotp(t,x)  \,\mathrm{d}x\\
+        =&\int -\nabla\cdot(p\cdot f)\cdot \phi + \phi\cdot\nabla\cdot(\nabla\cdot\Sigma p) \,\mathrm{d}x\\
+        =&\int\phi(x)\cdot\frac{\partial}{\partial t}p(t,x)\mathrm{d}x
+    \end{aligned}
+\end{equation*}
+Since $\phi$ is chosen arbitrarily, we have
+$$
+\frac{\partial}{\partial t}p+\nabla\cdot(pf) = \nabla\cdot(\nabla\cdot \Sigma p)
+$$
+\end{proof}
+
+
+
+
